@@ -1,29 +1,22 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
-
-const instance = basicLightbox.create(`<img src="" width="800" height="600">`);
-
-const refs = {
-  galleryContainer: document.querySelector('.gallery'),
-  image: instance.element().querySelector('img'),
-};
-
+const galleryContainer = document.querySelector('.gallery');
 const cardsMarkup = createGalleryCardsMarkup(galleryItems);
 
-refs.galleryContainer.insertAdjacentHTML('beforeend', cardsMarkup);
+galleryContainer.insertAdjacentHTML('beforeend', cardsMarkup);
 
-refs.galleryContainer.addEventListener('click', onGalleryContainerClick);
+galleryContainer.addEventListener('click', onGalleryContainerClick);
 
-function createGalleryCardsMarkup(galleryItems) {
-  return galleryItems
+function createGalleryCardsMarkup(items) {
+  return items
     .map(({ preview, original, description }) => {
       return `<div class="gallery__item">
   <a class="gallery__link" href="${original}">
     <img
       class="gallery__image"
-      src="${preview}"
-      data-source="${original}"
-      alt="${description}"
+      src='${preview}'
+      data-source='${original}'
+      alt='${description}'
     />
   </a>
 </div>`;
@@ -31,13 +24,30 @@ function createGalleryCardsMarkup(galleryItems) {
     .join('');
 }
 
-function onGalleryContainerClick(evt) {
-  const isGalleryContainerEl = evt.target.classList.contains('gallery');
+function onGalleryContainerClick(event) {
+  const isGalleryContainerEl = event.target.classList.contains('.gallery__image');
 
   if (!isGalleryContainerEl) {
     return;
   }
-  image.show();
+
+  const instance = basicLightbox.create(
+    `<img src="${event.target.dataset.source}" width="800" height="600"`,
+  );
+
+  instance.show();
+  document.addEventListener('keydown', onEscKeyPress);
+}
+
+function onEscKeyPress(event) {
+  const ESC_KEY_CODE = 'Escape';
+  const isEscKey = event.code === ESC_KEY_CODE;
+
+  if (!isEscKey) {
+    return;
+  }
+  instance.close();
+  document.removeEventListener('keydown', onEscKeyPress);
 }
 
 /*const galleryContainer = document.querySelector('.gallery');
