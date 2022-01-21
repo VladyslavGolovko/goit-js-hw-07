@@ -10,9 +10,9 @@ const refs = {
 
 const cardsMarkup = createGalleryCardsMarkup(galleryItems);
 
-galleryContainer.insertAdjacentHTML('beforeend', cardsMarkup);
+refs.galleryContainer.insertAdjacentHTML('beforeend', cardsMarkup);
 
-galleryContainer.addEventListener('click', onGalleryContainerClick);
+refs.galleryContainer.addEventListener('click', onGalleryContainerClick);
 
 function createGalleryCardsMarkup(galleryItems) {
   return galleryItems
