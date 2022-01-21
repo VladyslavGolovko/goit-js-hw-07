@@ -1,7 +1,46 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
-const galleryContainer = document.querySelector('.gallery');
+const instance = basicLightbox.create(`<img src="" width="800" height="600">`);
+
+const refs = {
+  galleryContainer: document.querySelector('.gallery'),
+  image: instance.element().querySelector('img'),
+};
+
+const cardsMarkup = createGalleryCardsMarkup(galleryItems);
+
+galleryContainer.insertAdjacentHTML('beforeend', cardsMarkup);
+
+galleryContainer.addEventListener('click', onGalleryContainerClick);
+
+function createGalleryCardsMarkup(galleryItems) {
+  return galleryItems
+    .map(({ preview, original, description }) => {
+      return `<div class="gallery__item">
+  <a class="gallery__link" href="large-image.jpg">
+    <img
+      class="gallery__image"
+      src="small-image.jpg"
+      data-source="large-image.jpg"
+      alt="Image description"
+    />
+  </a>
+</div>`;
+    })
+    .join('');
+}
+
+function onGalleryContainerClick(evt) {
+  const isGalleryContainerEl = evt.target.classList.contains('gallery');
+
+  if (!isGalleryContainerEl) {
+    return;
+  }
+  image.show();
+}
+
+/*const galleryContainer = document.querySelector('.gallery');
 
 const galleryCardMarkup = galleryItems
   .map(
@@ -41,4 +80,4 @@ function onEscKeyPress(event) {
   }
 }
 
-galleryContainer.addEventListener('keydown', onEscKeyPress);
+galleryContainer.addEventListener('keydown', onEscKeyPress);*/
